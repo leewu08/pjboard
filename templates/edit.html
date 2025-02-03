@@ -1,0 +1,25 @@
+{% extends 'base.html' %}{% block stylesheet %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}
+<body>{% block main %}
+    <div class="container">
+        <h1 class="mt-4">게시글 수정</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}" required>
+            </div>
+            <div class="form-group">
+                <label for="content">내용</label>
+                <textarea class="form-control" id="content" name="content" rows="4" required>{{ post.content }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="file">파일 업로드 (선택)</label>
+                <input type="file" class="form-control-file" id="file" name="file">
+            </div>
+            <button type="submit" class="btn btn-primary">수정</button>
+			<a href="/" class="btn btn-secondary">목록으로</a>
+        </form>
+    </div>{% endblock %}
+</body>
+</html>

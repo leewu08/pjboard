@@ -1,0 +1,64 @@
+{% extends 'base.html' %}{% block stylesheet %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}
+<body>
+    {% block main %}
+        <div class="container">
+            <h1 class="mt-4">이벤트 수정</h1>
+            
+            <form method="POST" enctype="multipart/form-data">
+                <!-- 제목 필드 -->
+                <div class="form-group">
+                    <label for="title">이벤트 제목</label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ event.title }}" required>
+                </div>
+    
+                <!-- 설명 필드 -->
+                <div class="form-group">
+                    <label for="description">이벤트 설명</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" required>{{ event.description }}</textarea>
+                </div>
+    
+                <!-- 시작 날짜 필드 -->
+                <!-- 시작 날짜 -->
+                <div class="form-group">
+                    <label for="start_date">시작 날짜</label>
+                    <input type="date" class="form-control" id="start_date" name="start_date" 
+                        value="{{ event.start_date.strftime('%Y-%m-%d') if event.start_date else '' }}" required>
+                </div>
+
+                <!-- 종료 날짜 -->
+                <div class="form-group">
+                    <label for="end_date">종료 날짜</label>
+                    <input type="date" class="form-control" id="end_date" name="end_date" 
+                        value="{{ event.end_date.strftime('%Y-%m-%d') if event.end_date else '' }}" required>
+                </div>
+                <!-- 장소 필드 -->
+                <div class="form-group">
+                    <label for="location">장소</label>
+                    <input type="text" class="form-control" id="location" name="location" value="{{ event.location }}">
+                </div>
+    
+                <!-- 카테고리 필드 -->
+                <div class="form-group">
+                    <label for="category">카테고리</label>
+                    <input type="text" class="form-control" id="category" name="category" value="{{ event.category }}">
+                </div>
+    
+                <!-- 기존 첨부파일 표시 및 새 파일 업로드 -->
+                <div class="form-group">
+                    <label for="file">첨부파일 (선택)</label>
+                    <input type="file" class="form-control-file" id="file" name="file">
+                    <small class="form-text text-muted">현재 파일: {{ event.filename if event.filename else '없음' }}</small>
+                </div>
+    
+                <!-- 제출 버튼 -->
+                <button type="submit" class="btn btn-primary">수정 완료</button>
+    
+                <!-- 목록으로 돌아가기 버튼 -->
+                <a href="/" class="btn btn-secondary">목록으로</a>
+            </form>
+        </div>
+    {% endblock %}
+</body>
+</html>

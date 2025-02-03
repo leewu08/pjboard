@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AkbariMonster</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    
+    {% block stylesheet %}
+    {% endblock %}
+<style>
+
+/* 환영 메시지 */
+/* 콘텐츠 영역 */
+/* flexbox 레이아웃 설정 */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 화면 높이를 최소화 */
+  padding-bottom: 50px; /* 푸터 높이만큼 여백을 남겨 푸터가 항상 화면 하단에 있도록 함 */
+}
+
+/* 콘텐츠 영역 */
+main {
+  flex: 1; /* 콘텐츠 영역이 남은 공간을 차지하도록 함 */
+  padding: 20px;
+  background-color: #f9f9f9; /* 콘텐츠 배경색 */
+}
+
+.welcome-message {
+    margin-right: auto; /* 우측 끝으로 밀어내기 */
+}
+
+.welcome-message span {
+    color: white;
+}
+    .auth-buttons .btn {
+        padding: 8px 16px;
+        font-size: 1rem;
+        border-radius: 4px;
+        text-decoration: none;
+        color: white;
+    }
+    
+    .auth-buttons .btn-danger {
+        background-color: #e74c3c;
+    }
+    
+    .auth-buttons .btn-success {
+        background-color: #2ecc71;
+    }
+    
+    .auth-buttons .btn:hover {
+        opacity: 0.8;
+    }
+/* 기본 색상 설정 */.nav-links {
+    list-style: none;
+    display: flex; /* 항목들을 가로로 나열 */
+    width: 100%; /* 전체 너비를 사용하도록 설정 */
+    justify-content: space-around; /* 항목들을 균등하게 분배 */
+    padding: 0;
+    margin: 0;
+}
+.nav-links {
+    list-style: none;
+    display: flex; /* 항목들을 가로로 나열 */
+    gap: 40px; /* 항목들 간의 간격을 더 크게 설정 */
+}
+
+.nav-links li {
+    display: inline; /* li를 가로로 나열되게 설정 */
+}
+
+.nav-links a {
+    font-size: 1.2rem; /* 글자 크기를 더 크게 설정 */
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--link-hover-color);
+}
+
+    :root {
+        --primary-color: #4E9FD1; /* 연푸른색 */
+        --background-color: #F0F8FF; /* 연한 파란색 */
+        --text-color: #333333; /* 어두운 회색 */
+        --secondary-color: #A6C8E1; /* 연한 푸른색 */
+        --header-footer-bg: #1E3A57; /* 어두운 파란색 */
+        --link-hover-color: #3183B4; /* 어두운 푸른색 */
+        --button-bg: #66B3FF; /* 연한 하늘색 */
+        --button-hover-bg: #4C99CC; /* 중간 푸른색 */
+    }
+    
+    /* 기본 스타일 */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+    
+    /* Header 스타일 */
+    .header {
+        background-color: var(--header-footer-bg);
+        color: white;
+        padding: 20px 0;
+    }
+    
+    .header .logo {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    
+    .header nav .nav-links a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 1rem;
+        transition: color 0.3s;
+    }
+    
+    .header nav .nav-links a:hover {
+        color: var(--link-hover-color);
+    }
+    
+    /* Button 스타일 */
+    button {
+        background-color: var(--button-bg);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    button:hover {
+        background-color: var(--button-hover-bg);
+    }
+    
+    /* Footer 스타일 */
+    .footer {
+        background-color: var(--header-footer-bg);
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+    }
+    
+    .footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+    
+    .footer a:hover {
+        text-decoration: underline;
+    }
+      </style>
+</head>
+
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="logo-and-welcome">
+            <h1 class="logo">AkBaRi</h1>
+            <div class="welcome-message">
+                {% if session['userid'] %}
+                    <h5 style="color:#fff;" class="me-3">환영합니다, {{session['userid']}} 님!</span>
+                    <a href="/logout" class="btn btn-danger">로그아웃</a>
+                {% else %}
+                    <a href="/login" class="btn btn-success">로그인</a>
+                {% endif %}
+            </div>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/">홈</a></li>
+                <li><a href="{{ url_for('event') }}">이벤트</a></li>
+                <li><a href="{{ url_for('post') }}">게시판</a></li>
+
+            </ul>
+
+            <div class="auth-buttons">
+            </div>
+        </nav>
+    </div>
+</header>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-success">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+
+
+{% block main %}
+    <!-- Main Content (This part can be filled later) -->
+    <main class="content">
+        <section id="home">
+            <h2>안녕하세요</h2>
+            <p>반갑읍니다</p>
+        </section>
+    </main>
+{% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 MySite. All rights reserved.</p>
+            <p>Follow me on <a href="#">Instagram</a> | <a href="#">LinkedIn</a></p>
+        </div>
+    </footer>
+{% block script %}
+{% endblock %}
+</body>
+</html>

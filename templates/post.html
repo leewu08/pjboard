@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+
+<style> img{
+     width: 70px;
+     height: 70px;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  list-style-type: none;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination a {
+  text-decoration: none;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+/* 비활성화된 버튼 */
+.pagination a.disabled {
+  color: #ccc;
+  pointer-events: none;
+  border-color: #ddd;
+}
+/* 활성화된 페이지 번호 스타일 */
+.pagination a.active {
+  background-color: #007bff; /* 배경색 */
+  color: white; /* 글자색 */
+  font-weight: bold; /* 글씨 굵게 */
+  border-color: #0056b3; /* 경계선 색 */
+  cursor: default; /* 커서 스타일 변경 */
+}
+
+
+/* 게시글 행을 균등하게 정렬하는 레이아웃 */
+.post-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 3fr 1fr 1fr; /* 열의 비율 설정 */
+    gap: 20px; /* 열 사이의 간격 */
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+/* 게시글 제목 스타일 */
+.post-title {
+    font-size: 18px;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 게시글 이미지 스타일 */
+.post-image {
+    text-align: center;
+}
+
+.post-image-img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+}
+
+/* 게시글 내용 스타일 */
+.post-content {
+    font-size: 14px;
+    color: #555;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 게시글 생성일과 조회수 스타일 */
+.post-date, .post-views {
+    font-size: 12px;
+    text-align: center;
+    color: #777;
+}
+
+/* 게시글 제목 링크 스타일 */
+.post-title a {
+    text-decoration: none;
+    color: #333;
+}
+
+.post-title a:hover {
+    color: #007bff;
+}
+
+ </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}>{% block main %}
+    <div class="container">
+        <h1 class="mt-4">게시판</h1>
+        
+        <a href="/post/add" class="btn btn-primary mb-3">게시글 추가</a>
+        
+        <div class="list-group" flex-basis: 30%;><thead>
+        <tr>
+            <!-- 테이블 제목 -->
+            <th>제목</th>
+            <th>이미지</th>
+            <th>내용</th>
+            <th>생성일</th>
+            <th>조회수</th>
+        </tr>
+    </thead>
+          {% for post in posts %}
+    <table class="post-table">
+        <tr class="post-row">
+            <!-- 게시글 제목 -->
+            <td class="post-title">
+                <a href="/post/{{ post.id }}">제목:{{ post.title }}</a>
+            </td>
+            <!-- 게시글 이미지 -->
+            <td class="post-image">
+                {% if post.filename %}
+                    <img src="/static/uploads/{{ post.filename }}" alt="게시글 이미지" class="post-image" />
+                {% else %}
+                    <img src="/static/uploads/notimage.png" alt="기본 이미지" class="post-image" />
+                {% endif %}
+            </td>
+            
+            <!-- 게시글 내용 -->
+            <td class="post-content">
+                본문:{{ post.content[:100] }}
+            </td>
+            
+            <!-- 게시글 생성일 -->
+            <td class="post-date">
+                {{ post.created_at }}
+            </td>
+            
+            <!-- 게시글 조회수 -->
+            <td class="post-views">
+                조회수{{ post.views }}회 작성자:{{ post.userid }}
+            </td>
+        </tr>
+    </table>
+{% endfor %}
+
+      
+        </div>
+    </div>
+    <!-- 페이지네이션 컨테이너 -->
+    <div class="pagination-container">
+        <div class="pagination">
+            <!-- 이전 페이지 링크 (비활성화 적용) -->
+            {% if current_page > 1 %}
+                <a href="{{ url_for('post', page=current_page - 1) }}">이전</a>
+            {% else %}
+                <a href="#" class="disabled">이전</a> <!-- 비활성화된 '이전' 버튼 -->
+            {% endif %}
+
+            <!-- 페이지 번호 링크 -->
+            {% for page_num in range(1, total_pages + 1) %}
+                <a href="{{ url_for('post', page=page_num) }}" 
+                   {% if page_num == current_page %} class="active" {% endif %}>
+                   {{ page_num }}
+                </a>
+            {% endfor %}
+            
+
+            <!-- 다음 페이지 링크 (비활성화 적용) -->
+            {% if current_page < total_pages %}
+                <a href="{{ url_for('post', page=current_page + 1) }}">다음</a>
+            {% else %}
+                <a href="#" class="disabled">다음</a> <!-- 비활성화된 '다음' 버튼 -->
+            {% endif %}
+    </div>
+    {% endblock %}

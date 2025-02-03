@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+
+<style> img{
+     width: 70px;
+     height: 70px;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  list-style-type: none;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination a {
+  text-decoration: none;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+/* 비활성화된 버튼 */
+.pagination a.disabled {
+  color: #ccc;
+  pointer-events: none;
+  border-color: #ddd;
+}
+/* 활성화된 페이지 번호 스타일 */
+.pagination a.active {
+  background-color: #007bff; /* 배경색 */
+  color: white; /* 글자색 */
+  font-weight: bold; /* 글씨 굵게 */
+  border-color: #0056b3; /* 경계선 색 */
+  cursor: default; /* 커서 스타일 변경 */
+}
+
+
+ </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}
+{% block main %}
+    <div class="container">
+      <h1 class="mt-4">이벤트 목록</h1>
+      <a href="/event/add" class="btn btn-primary mb-3">게시글 추가</a>
+      <div class="list-group">
+          {% for event in events %}
+          <a href="/event/{{ event.id }}" class="list-group-item list-group-item-action">
+              <h5 class="mb-1">{{ event.title }}</h5>
+              
+              <p class="mb-1">{{ event.description[:100] }}...</p> <!-- 내용 일부만 표시 -->
+              <small>{{ event.start_date }} ~ {{ event.end_date }}</small> <!-- 시작일과 종료일 표시 -->
+              <small>장소: {{ event.location }}</small>
+              <small>카테고리: {{ event.category }}</small>
+              <small>{{ event.created_at }}</small>
+              <small> 조회수{{ event.views }}</small>
+              {% if event.filename %}
+              <img src="{{ url_for('static', filename='uploads/' + event.filename) }}" width="500"/><br><br>
+              {% endif %}
+              {% if not event.filename %}
+              <img src="{{ url_for('static', filename='uploads/04.jpg/') }}" width="500"/><br><br>
+              {% endif %}
+          </a>
+          {% endfor %}
+      </div>
+    </div>
+    <!-- 페이지네이션 컨테이너 -->
+    <div class="pagination-container">
+        <div class="pagination">
+            <!-- 이전 페이지 링크 (비활성화 적용) -->
+            {% if current_page > 1 %}
+                <a href="{{ url_for('event', page=current_page - 1) }}">이전</a>
+            {% else %}
+                <a href="#" class="disabled">이전</a> <!-- 비활성화된 '이전' 버튼 -->
+            {% endif %}
+
+            <!-- 페이지 번호 링크 -->
+            {% for page_num in range(1, total_pages + 1) %}
+                <a href="{{ url_for('event', page=page_num) }}" 
+                   {% if page_num == current_page %} class="active" {% endif %}>
+                   {{ page_num }}
+                </a>
+            {% endfor %}
+            
+
+            <!-- 다음 페이지 링크 (비활성화 적용) -->
+            {% if current_page < total_pages %}
+                <a href="{{ url_for('event', page=current_page + 1) }}">다음</a>
+            {% else %}
+                <a href="#" class="disabled">다음</a> <!-- 비활성화된 '다음' 버튼 -->
+            {% endif %}
+    </div>
+    {% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% endblock %}</head>
+{% block main %}
+    <div class="container">
+        <h1 class="mt-4">게시글 추가</h1>
+        <form method="POST" action="/event/add" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">이벤트 제목</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="description">이벤트 설명</label>
+                <textarea class="form-control" id="description" name="description" required></textarea>
+            </div>
+        
+            <div class="form-group">
+                <label for="start_date">시작 날짜</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="end_date">종료 날짜</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="location">장소</label>
+                <input type="text" class="form-control" id="location" name="location">
+            </div>
+        
+            <div class="form-group">
+                <label for="category">카테고리</label>
+                <input type="text" class="form-control" id="category" name="category">
+            </div>
+        
+            <div class="form-group">
+                <label for="file">첨부파일</label>
+                <input type="file" class="form-control" id="file" name="file">
+            </div>
+        
+            <button type="submit" class="btn btn-primary">이벤트 추가</button>
+        </form>
+    </div>
+{% endblock %}
